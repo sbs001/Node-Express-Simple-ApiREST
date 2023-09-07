@@ -3,6 +3,7 @@ const cors = require("cors");
 const { dbConnection } = require("../db/config");
 
 const USERS_PATH = "/api/users";
+const AUTH_PATH = "/api/auth";
 
 class Server {
   constructor() {
@@ -10,7 +11,7 @@ class Server {
     this.port = process.env.PORT;
 
     this.connectDB();
-    
+
     this.middlewares();
     this.routes();
   }
@@ -26,6 +27,7 @@ class Server {
   }
 
   routes() {
+    this.app.use(AUTH_PATH, require("../routes/auth"));
     this.app.use(USERS_PATH, require("../routes/users"));
   }
 

@@ -13,14 +13,16 @@ const {
   deleteUsers,
 } = require("../controllers/users");
 const { validateProps } = require("../middlewares/user-validation");
+const { validateJWT } = require("../middlewares/jwt-validations");
 
 const router = Router();
 
-router.get("/", getUsers);
+router.get("/", [validateJWT], getUsers);
 
 router.post(
   "/",
   [
+    validateJWT,
     check("email", "Invalid email").isEmail(),
     check("email", "Email is required").not().isEmpty(),
     check("email").custom(emailValidation),
@@ -37,6 +39,7 @@ router.post(
 router.put(
   "/:id",
   [
+    validateJWT,
     check("id", "Invalid id").isMongoId(),
     check("id").custom(idUserIdValidation),
     check("role").custom(roleValidation),
@@ -48,6 +51,7 @@ router.put(
 router.delete(
   "/:id",
   [
+    validateJWT,
     check("id", "Invalid id").isMongoId(),
     check("id").custom(idUserIdValidation),
     validateProps,
