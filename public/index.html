@@ -4,11 +4,49 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Access Denied</title>
+  <title>Sing In</title>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 
 <body>
-  <h1>Access Denied</h1>
+  <h1>Sign in with google</h1>
+
+  <hr>
+
+  <div id="g_id_onload" data-client_id="534245437086-n9p9cgj088gqao98neh5d5o2hsdlnk8r.apps.googleusercontent.com"
+    data-auto_prompt="false" data-callback="handleCredentialResponse">
+  </div>
+
+  <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="sign_in_with"
+    data-shape="rectangular" data-logo_alignment="left">
+  </div>
+
+  <button id="google-sing-out">
+    Sing Out
+  </button>
+
+  <script>
+    function handleCredentialResponse(response) {
+      fetch("http://localhost:8080/api/auth/google-login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id_token: response.credential })
+      })
+        .then(resp => resp.json())
+        .then(resp => localStorage.setItem("user", resp.user.email))
+        .catch(console.error)
+    }
+
+    const button = document.getElementById("google-sing-out");
+    button.onclick = () => {
+      google.accounts.id.disableAutoSelect()
+      google.accounts.id.revoke(localStorage.getItem("user"), (done) => {
+        localStorage.clear();
+        location.reload();
+      })
+    } 
+  </script>
+
 </body>
 
 </html>
