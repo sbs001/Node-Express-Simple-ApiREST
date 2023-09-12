@@ -22,7 +22,7 @@ const hasRole = (...roles) => {
     if (!roles.includes(req.user.role)) {
       return res.status(400).json({ message: "Invalid role" });
     }
-    
+
     next();
   };
 };

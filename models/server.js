@@ -4,6 +4,9 @@ const { dbConnection } = require("../db/config");
 
 const USERS_PATH = "/api/users";
 const AUTH_PATH = "/api/auth";
+const SEARCH_PATH = "/api/search";
+const PRODUCTS_PATH = "/api/products";
+const CATEGORIES_PATH = "/api/categories";
 
 class Server {
   constructor() {
@@ -29,6 +32,9 @@ class Server {
   routes() {
     this.app.use(AUTH_PATH, require("../routes/auth"));
     this.app.use(USERS_PATH, require("../routes/users"));
+    this.app.use(SEARCH_PATH, require("../routes/search"));
+    this.app.use(PRODUCTS_PATH, require("../routes/products"));
+    this.app.use(CATEGORIES_PATH, require("../routes/categories"));
   }
 
   listen() {

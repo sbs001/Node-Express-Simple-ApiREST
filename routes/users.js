@@ -51,7 +51,7 @@ router.delete(
   "/:id",
   [
     validateJWT,
-    hasRole("ADMIN_ROLE, SUPER_ADMIN_ROLE"),
+    hasRole("ADMIN_ROLE", "SUPER_ADMIN_ROLE"),
     check("id", "Invalid id").isMongoId(),
     check("id").custom(idUserIdValidation),
     validateProps,
